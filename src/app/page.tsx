@@ -1,9 +1,9 @@
-import Image from "next/image";
-
-export default function Home() {
+const Page = () => {
   return (
-    <div>
-      <p className="text-7xl">TEST</p>
+    <div className="bg-slate-500">
+      <p className="text-3xl font-bold underline">Hello world!</p>
     </div>
   );
-}
+};
+
+export default Page;

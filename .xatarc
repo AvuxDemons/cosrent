@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://CosRent-mlh76b.ap-southeast-2.xata.sh/db/COSRENT",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
