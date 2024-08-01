@@ -7,7 +7,7 @@ const Page = () => {
   if (!currentSession) {
     return (
       <div>
-        <p className="text-3xl font-bold underline">Halo {!</p>
+        <p className="text-3xl font-bold underline">Halo !</p>
       </div>
     );
   }
