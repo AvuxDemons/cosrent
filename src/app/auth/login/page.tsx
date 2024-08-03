@@ -48,20 +48,26 @@ const AuthenticationPage = () => {
             <blockquote className="space-y-2">
               <p className="text-lg">
                 &ldquo;Cosplay bukan hanya tentang mengenakan kostum, tetapi
-                juga tentang menghidupkan karakter yang kita cintai.&rdquo;
+                juga tentang menghidupkan karakter yang kita cintai.&rdquo; -
+                Kang Siomay
               </p>
-              <footer className="text-sm">Kang Siomay</footer>
+              <footer className="text-sm">
+                In Frame{" "}
+                <Link className="underline" href={"https://x.com/vestiazeta"}>
+                  @VestiaZeta
+                </Link>
+              </footer>
             </blockquote>
           </div>
         </div>
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight uppercase">
-                Login
+              <h1 className="text-2xl font-semibold tracking-tight capitalize">
+                Mulai cari kostum Sekarang
               </h1>
               <p className="text-sm text-muted-foreground">
-                Masuk ke akun anda untuk melanjutkan
+                Masuk untuk menikmati fitur yang lebih lengkap
               </p>
             </div>
             <UserAuthForm />
@@ -71,14 +77,14 @@ const AuthenticationPage = () => {
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Terms of Service
+                Syarat Penggunaan
               </Link>{" "}
               dan{" "}
               <Link
                 href="/privacy"
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Privacy Policy
+                Kebijakan Privasi
               </Link>
             </p>
           </div>
