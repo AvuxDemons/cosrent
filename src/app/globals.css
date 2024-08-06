@@ -68,3 +68,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  min-height: 100dvh;
+}
+
+.rotate-0 {
+  transform: rotate(0deg);
+  transition: transform 0.3s;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}

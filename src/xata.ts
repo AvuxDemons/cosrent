@@ -22,7 +22,35 @@ const tables = [
       { name: "username", type: "string", unique: true },
       { name: "sosmed", type: "json", notNull: true, defaultValue: "[]" },
       { name: "emergencyphone", type: "string", unique: true },
-      { name: "identitycard", type: "file" },
+      { name: "identitycard", type: "string" },
+      { name: "role", type: "link", link: { table: "role" } },
+    ],
+  },
+  {
+    name: "module",
+    columns: [
+      { name: "key", type: "string", unique: true },
+      { name: "label", type: "string" },
+    ],
+    revLinks: [{ column: "module", table: "permission" }],
+  },
+  {
+    name: "role",
+    columns: [{ name: "label", type: "string" }],
+    revLinks: [
+      { column: "role", table: "permission" },
+      { column: "role", table: "user" },
+    ],
+  },
+  {
+    name: "permission",
+    columns: [
+      { name: "role", type: "link", link: { table: "role" } },
+      { name: "module", type: "link", link: { table: "module" } },
+      { name: "create", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "read", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "update", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "delete", type: "bool", notNull: true, defaultValue: "false" },
     ],
   },
 ] as const;
@@ -33,8 +61,20 @@ export type InferredTypes = SchemaInference<SchemaTables>;
 export type User = InferredTypes["user"];
 export type UserRecord = User & XataRecord;
 
+export type Module = InferredTypes["module"];
+export type ModuleRecord = Module & XataRecord;
+
+export type Role = InferredTypes["role"];
+export type RoleRecord = Role & XataRecord;
+
+export type Permission = InferredTypes["permission"];
+export type PermissionRecord = Permission & XataRecord;
+
 export type DatabaseSchema = {
   user: UserRecord;
+  module: ModuleRecord;
+  role: RoleRecord;
+  permission: PermissionRecord;
 };
 
 const DatabaseClient = buildClient();

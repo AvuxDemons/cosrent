@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { upsertUser } from "@/lib/auth";
 
 export const authOptions = {
     providers: [
@@ -9,9 +10,32 @@ export const authOptions = {
         }),
     ],
     callbacks: {
-        async session(data) {
-            return data;
-        }
+        async jwt({ token }) {
+            if (token) {
+                const dbUser = await upsertUser(token);
+                token.role = dbUser.role.id;
+            }
+            return token
+        },
+        async session({ session, token }) {
+            if (session?.user) session.user.role = token.role
+            return session
+        },
+        // https://next-auth.js.org/configuration/callbacks#redirect-callback
+        // async signIn({ user, account, profile, email, credentials }) {
+        //     const isAllowedToSignIn = true
+        //     if (isAllowedToSignIn) {
+        //         return true
+        //     } else {
+        //         // Return false to display a default error message
+        //         return false
+        //         // Or you can return a URL to redirect to:
+        //         // return '/unauthorized'
+        //     }
+        // },
+        async redirect({ url, baseUrl }) {
+            return url.startsWith(baseUrl) ? url : baseUrl;
+        },
     },
     pages: {
         signIn: "/auth/login",

@@ -1,35 +1,36 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { ReactNode } from "react";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-providers";
 import { authUserSession } from "@/lib/sessions";
-import SessionProvider from "@/components/providers/session-providers";
+import ClientSessionProvider from "@/components/providers/session-providers";
+import NavigationBar from "@/components/utilities/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Cosrent",
-  description: "Cosrent",
-};
+const inter = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: ReactNode;
+}) {
   const session = await authUserSession();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <SessionProvider session={session} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ClientSessionProvider session={session}>
+            <NavigationBar />
+            {children}
+          </ClientSessionProvider>
         </ThemeProvider>
       </body>
     </html>

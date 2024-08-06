@@ -16,30 +16,38 @@ const getRecordByID = async (table: TableName, id: string) => {
     return JSON.parse(record);
 }
 
-const searchRecord = async (table: TableName, filters: { attr: string, value: any }[]) => {
+const searchRecord = async (table: TableName, filters: { attr: string, value: any }[], columns?: string[]) => {
     let query = xata.db[table];
+
+    if (columns) {
+        query = (query as any).select(columns);
+    }
 
     filters.forEach(filter => {
         query = (query as any).filter(filter.attr, filter.value);
     });
 
     const records: any = await query.getFirst();
+
     return JSON.parse(records);
 }
 
 const filterRecords = async (
     table: TableName,
     filters: { attr: string, value: any }[],
+    columns?: string[],
     sort: { attr: string, order: "asc" | "desc" } | null = { attr: "", order: "asc" }
 ) => {
     let query = xata.db[table] as any;
 
-    // Apply filters
+    if (columns) {
+        query = (query as any).select(columns);
+    }
+
     filters.forEach(filter => {
         query = query.filter(filter.attr, filter.value);
     });
 
-    // Apply sorting if specified
     if (sort && sort.attr) {
         query = query.sort(sort.attr, sort.order);
     }
