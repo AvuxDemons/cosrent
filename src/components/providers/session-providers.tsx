@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 interface ClientSessionProviderProps {
   children: ReactNode;
-  session: any;
+  session?: any;
 }
 
 export default function ClientSessionProvider({

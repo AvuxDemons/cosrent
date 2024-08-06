@@ -27,7 +27,7 @@ const UserAccountNav = ({ session }: { session: any }) => {
           showFallback
           as="button"
           className="transition-transform"
-          src={session?.user.image}
+          src={session?.image}
         />
       </DropdownTrigger>
       <DropdownMenu
@@ -55,15 +55,15 @@ const UserAccountNav = ({ session }: { session: any }) => {
             className="h-14 gap-2 opacity-100"
           >
             <User
-              name={session?.user.name}
-              description={session?.user.email}
+              name={session?.name}
+              description={session?.email}
               classNames={{
                 name: "text-default-600",
                 description: "text-default-500",
               }}
               avatarProps={{
                 size: "sm",
-                src: session?.user.image,
+                src: session?.image,
               }}
             />
           </DropdownItem>

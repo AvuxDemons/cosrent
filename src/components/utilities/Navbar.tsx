@@ -18,6 +18,7 @@ import {
   Spacer,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   FaChevronDown,
   FaComment,
@@ -31,9 +32,10 @@ import {
 import { FaBook, FaBookAtlas } from "react-icons/fa6";
 import { GiSpiderMask } from "react-icons/gi";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import ThemeSwitch from "../ui/Theme";
-import { useSession } from "next-auth/react";
 import UserAccountNav from "../auth/AccountNav";
 
 type NavbarItemData = {
@@ -48,11 +50,11 @@ type NavbarSection = {
   data: NavbarItemData[];
 };
 
-const NavigationBar = () => {
-  const { data: session } = useSession();
+const NavigationBar = ({ session }: { session: any }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (path: string) => pathname === path;
 
@@ -77,19 +79,19 @@ const NavigationBar = () => {
           label: "Galeri",
           description: "Galeri Kostum & Aksesoris kami.",
           startContent: icons.gallery,
-          path: "/",
+          path: "/#gallery",
         },
         {
           label: "Testimoni",
           description: "Pendapat cosplayer tentang kami.",
           startContent: icons.review,
-          path: "/",
+          path: "/#review",
         },
         {
           label: "FAQ",
           description: "Pertanyaan yang sering ditanyakan.",
           startContent: icons.faq,
-          path: "/",
+          path: "/#faq",
         },
       ],
     },
@@ -100,19 +102,19 @@ const NavigationBar = () => {
           label: "Kostum",
           description: "kostum dengan kualitas terbaik.",
           startContent: icons.costume,
-          path: "/",
+          path: "/katalog",
         },
         {
           label: "Aksesoris",
           description: "Aksesoris pelengkap karakter impianmu.",
           startContent: icons.accessories,
-          path: "/",
+          path: "/katalog",
         },
         {
           label: "Cara & Peraturan Sewa",
           description: "Cara & Peraturan Sewa kami.",
           startContent: icons.book,
-          path: "/",
+          path: "/rules",
         },
       ],
     },
@@ -145,6 +147,10 @@ const NavigationBar = () => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <nav>
       <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
@@ -152,9 +158,14 @@ const NavigationBar = () => {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <NavbarBrand className="flex items-center gap-2">
-          <GiSpiderMask size={25} />
-          <p className="font-bold text-inherit">COSRENT</p>
+        <NavbarBrand>
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => handleNavigation("/")}
+          >
+            <GiSpiderMask size={25} />
+            <p className="font-bold text-inherit">COSRENT</p>
+          </div>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           {navbarItems.map((section, index) => (
@@ -199,8 +210,9 @@ const NavigationBar = () => {
                     className={clsx({
                       "text-primary": isActive(item.path),
                     })}
+                    onClick={() => handleNavigation(item.path)}
                   >
-                    <Link href={item.path}>{item.label}</Link>
+                    {item.label}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -208,12 +220,34 @@ const NavigationBar = () => {
           ))}
         </NavbarContent>
         <NavbarContent justify="end" className="sm:flex gap-0">
-          <NavbarItem>
-            <ThemeSwitch />
-          </NavbarItem>
-          <NavbarItem>
-            <UserAccountNav session={session} />
-          </NavbarItem>
+          <AnimatePresence>
+            <NavbarItem>
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 },
+                  exit: { opacity: 0 },
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <ThemeSwitch />
+              </motion.div>
+            </NavbarItem>
+            <NavbarItem>
+              {session ? (
+                <UserAccountNav session={session} />
+              ) : (
+                <Link href="/auth/login">
+                  <Button color="primary" size="sm">
+                    Login
+                  </Button>
+                </Link>
+              )}
+            </NavbarItem>
+          </AnimatePresence>
         </NavbarContent>
         <NavbarMenu>
           {navbarItems.map((section, index) => (
@@ -223,10 +257,12 @@ const NavigationBar = () => {
                 <p className="font-bold text-sm uppercase">{section.title}</p>
                 <div className="flex flex-col gap-1 ml-4">
                   {section.data.map((item, idx) => (
-                    <NavbarMenuItem key={idx}>
-                      <Link className="w-full font-medium" href="#">
-                        {item.label}
-                      </Link>
+                    <NavbarMenuItem
+                      key={idx}
+                      className="w-full font-medium"
+                      onClick={() => handleNavigation(item.path)}
+                    >
+                      {item.label}
                     </NavbarMenuItem>
                   ))}
                 </div>
