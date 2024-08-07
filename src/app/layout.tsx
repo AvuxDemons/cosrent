@@ -1,10 +1,8 @@
 import { ReactNode } from "react";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-providers";
-import { getAuthSession } from "@/lib/auth";
 import ClientSessionProvider from "@/components/providers/session-providers";
-import NavigationBar from "@/components/utilities/Navbar";
 
 const inter = Poppins({
   subsets: ["latin"],

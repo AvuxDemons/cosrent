@@ -10,8 +10,15 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import { signOut } from "next-auth/react";
-import { FaPhoneAlt, FaPlus, FaSignOutAlt, FaUser } from "react-icons/fa";
+import {
+  FaPhoneAlt,
+  FaPlus,
+  FaSignOutAlt,
+  FaThemeco,
+  FaUser,
+} from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+import Theme from "../ui/Theme";
 
 const UserAccountNav = ({ session }: { session: any }) => {
   return (
@@ -72,6 +79,11 @@ const UserAccountNav = ({ session }: { session: any }) => {
           </DropdownItem>
           <DropdownItem key="settings" startContent={<FaCartShopping />}>
             Orders
+          </DropdownItem>
+        </DropdownSection>
+        <DropdownSection aria-label="Settings" showDivider>
+          <DropdownItem isReadOnly key="theme" endContent={<Theme />}>
+            Tema
           </DropdownItem>
         </DropdownSection>
         <DropdownSection aria-label="Help & Feedback">
