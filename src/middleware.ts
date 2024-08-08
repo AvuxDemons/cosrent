@@ -9,7 +9,6 @@ export default withAuth(
 
         const moduleName = `page-${(pathname as any).split('/').pop()}`;
         const permissions = await getPermissions(role, moduleName);
-
         if (!permissions.canRead) {
             return NextResponse.rewrite(new URL('/404', request.url));
         }

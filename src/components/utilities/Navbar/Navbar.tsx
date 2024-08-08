@@ -138,16 +138,11 @@ const NavigationBar = ({ session }: { session: any }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
 
   const isActive = (path: string) => pathname === path;
 
   const handleDropdownToggle = (index: number) => {
     setOpenDropdown(openDropdown === index ? null : index);
-  };
-
-  const handleNavigation = (path: string) => {
-    router.push(path);
   };
 
   return (
@@ -158,13 +153,10 @@ const NavigationBar = ({ session }: { session: any }) => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <div
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => handleNavigation("/")}
-          >
+          <Link href="/" className="flex items-center gap-2 cursor-pointer">
             <GiSpiderMask size={25} />
             <p className="font-bold text-inherit">COSRENT</p>
-          </div>
+          </Link>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           {navbarItems.map((section, index) => (
@@ -209,9 +201,8 @@ const NavigationBar = ({ session }: { session: any }) => {
                     className={clsx({
                       "text-primary": isActive(item.path),
                     })}
-                    onClick={() => handleNavigation(item.path)}
                   >
-                    {item.label}
+                    <Link href={item.path}>{item.label}</Link>
                   </DropdownItem>
                 ))}
               </DropdownMenu>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import UserAccountNav from "./Navbar/User";
-import { Button } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
 import { useState } from "react";
 import {
   FaBoxes,
@@ -17,6 +17,7 @@ import {
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaBars } from "react-icons/fa6";
+import { usePathname } from "next/navigation";
 
 const icons = {
   dashboard: <TbLayoutDashboardFilled className="h-6 w-6" />,
@@ -32,29 +33,55 @@ const navigationItems = [
   {
     title: "Home",
     data: [
-      { label: "Dashboard", path: "#", startContent: icons.dashboard },
-      { label: "Pengajuan", path: "#", startContent: icons.pengajuan },
-      { label: "Jadwal", path: "#", startContent: icons.jadwal },
+      { label: "Dashboard", path: "/admin", startContent: icons.dashboard },
+      {
+        label: "Pengajuan",
+        path: "/admin/queue",
+        startContent: icons.pengajuan,
+      },
+      { label: "Jadwal", path: "/schedule", startContent: icons.jadwal },
     ],
   },
   {
     title: "Katalog",
     data: [
-      { label: "Kostum", path: "#", startContent: icons.kostum },
-      { label: "Bundle", path: "#", startContent: icons.bundle },
-      { label: "Aksesoris", path: "#", startContent: icons.accessories },
+      {
+        label: "Kostum",
+        path: "/admin/katalog/costume",
+        startContent: icons.kostum,
+      },
+      {
+        label: "Bundle",
+        path: "/admin/katalog/bundle",
+        startContent: icons.bundle,
+      },
+      {
+        label: "Aksesoris",
+        path: "/admin/katalog/accessories",
+        startContent: icons.accessories,
+      },
     ],
   },
   {
     title: "Assets",
     data: [
-      { label: "Kostum", path: "#", startContent: icons.kostum },
-      { label: "Aksesoris", path: "#", startContent: icons.accessories },
+      {
+        label: "Kostum",
+        path: "/admin/assets/costume",
+        startContent: icons.kostum,
+      },
+      {
+        label: "Aksesoris",
+        path: "/admin/assets/accessories",
+        startContent: icons.accessories,
+      },
     ],
   },
 ];
 
 const Sidebar = ({ session }: { session: any }) => {
+  const pathname = usePathname();
+  const breadcrumbs: string[] = pathname.split("/").filter(Boolean);
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -65,9 +92,7 @@ const Sidebar = ({ session }: { session: any }) => {
         animate={{ width: open ? "400px" : "120px" }}
         exit={{ width: "120px" }}
         transition={{ duration: 0.3 }}
-        className={`hidden relative overflow-hidden sm:flex flex-col justify-between h-screen ${
-          open && "px-4"
-        } py-8 overflow-y-auto bg-content2 border-r rtl:border-r-0 rtl:border-l`}
+        className={`hidden relative overflow-hidden sm:flex flex-col justify-between h-screen py-8 overflow-y-auto bg-content2 border-r rtl:border-r-0 rtl:border-l`}
       >
         <div className="flex justify-center">
           <Image
@@ -78,8 +103,8 @@ const Sidebar = ({ session }: { session: any }) => {
           />
         </div>
 
-        <aside className="absolute h-[85%] top-[100px] flex flex-col justify-between flex-1">
-          <nav className="space-y-6">
+        <aside className="absolute w-full h-[85%] top-[100px] flex flex-col justify-between flex-1">
+          <nav className={`space-y-6 ${open && "px-4"} `}>
             {navigationItems.map((item) => (
               <div
                 key={item.title}
@@ -90,28 +115,27 @@ const Sidebar = ({ session }: { session: any }) => {
                 <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">
                   {item.title}
                 </label>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 w-full">
                   {item.data.map((data) => (
                     <Link
                       key={data.label}
-                      className={`flex flex-row items-center px-3 py-2 rounded-lg text-default-700 transition-colors duration-300 transform
+                      className={`flex flex-row items-center px-3 py-2 rounded-lg text-default-700 hover:bg-default-200 transition-colors duration-300 transform
                          ${!open && "justify-center"}`}
                       href={data.path}
                     >
                       {data.startContent}
                       <motion.div
-                        initial={{ opacity: 0 }}
+                        initial={{ opacity: 0, width: 0 }}
                         animate={{
                           opacity: open ? 1 : 0,
+                          width: open ? "auto" : 0,
                         }}
-                        exit={{ opacity: 0 }}
+                        exit={{ opacity: 0, width: 0 }}
                         transition={{
                           duration: 0.3,
                         }}
                       >
-                        {open && (
-                          <span className="mx-2 text-sm">{data.label}</span>
-                        )}
+                        <span className="mx-2 text-sm">{data.label}</span>
                       </motion.div>
                     </Link>
                   ))}
@@ -150,9 +174,7 @@ const Sidebar = ({ session }: { session: any }) => {
         animate={{ width: open ? "400px" : "0px" }}
         exit={{ width: "0px" }}
         transition={{ duration: 0.3 }}
-        className={`relative overflow-hidden flex sm:hidden flex-col justify-between h-screen ${
-          open && "px-4"
-        } py-8 overflow-y-auto bg-content2 border-r rtl:border-r-0 rtl:border-l`}
+        className={`relative overflow-hidden flex sm:hidden flex-col justify-between h-screen py-8 overflow-y-auto bg-content2 border-r rtl:border-r-0 rtl:border-l`}
       >
         <div className="flex justify-center">
           <Image
@@ -163,8 +185,8 @@ const Sidebar = ({ session }: { session: any }) => {
           />
         </div>
 
-        <aside className="absolute h-[85%] top-[100px] flex flex-col justify-between flex-1">
-          <nav className="space-y-6">
+        <aside className="absolute w-full h-[85%] top-[100px] flex flex-col justify-between flex-1">
+          <nav className={`space-y-6 ${open && "px-4"} `}>
             {navigationItems.map((item) => (
               <div key={item.title} className="flex flex-col space-y-3">
                 <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">
@@ -174,7 +196,7 @@ const Sidebar = ({ session }: { session: any }) => {
                   {item.data.map((data) => (
                     <Link
                       key={data.label}
-                      className="flex flex-row items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                      className="flex flex-row items-center px-3 py-2 rounded-lg text-default-700 hover:bg-default-200 transition-colors duration-300 transform"
                       href={data.path}
                     >
                       {data.startContent}
@@ -219,11 +241,24 @@ const Sidebar = ({ session }: { session: any }) => {
               exit={{ rotate: 0 }}
               transition={{ duration: 0.3 }}
             >
-              {open ? <FaTimes /> : <FaBars />}
+              {open ? <FaTimes size={20} /> : <FaBars size={20} />}
             </motion.div>
           </AnimatePresence>
         </Button>
-        <p>Admin</p>
+        <div className="flex flex-col gap-0">
+          <Breadcrumbs size="sm">
+            {breadcrumbs?.map((path, index) => (
+              <BreadcrumbItem
+                href={`/${path}`}
+                key={index}
+                classNames={{ item: "capitalize" }}
+              >
+                {path}
+              </BreadcrumbItem>
+            ))}
+          </Breadcrumbs>
+          <p>Admin</p>
+        </div>
       </div>
     </div>
   );
