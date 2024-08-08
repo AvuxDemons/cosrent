@@ -1,23 +1,41 @@
-import { withAuth, NextRequestWithAuth } from "next-auth/middleware"
-import { NextResponse } from "next/server"
+import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 import { getPermissions } from "@/lib/permissions";
 
 export default withAuth(
     async function middleware(request: NextRequestWithAuth) {
         const { pathname } = request.nextUrl;
-        const role: string = request.nextauth.token?.role || 'user';
+        const token = request.nextauth.token;
 
-        const moduleName = `page-${(pathname as any).split('/').pop()}`;
-        const permissions = await getPermissions(role, moduleName);
-        if (!permissions.canRead) {
-            return NextResponse.rewrite(new URL('/404', request.url));
+        if (!token) {
+            console.error("Token missing in production");
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+
+        const role: string = token.role || 'user';
+
+        try {
+            const moduleName = `page-${pathname.split('/').pop()}`;
+            const permissions = await getPermissions(role, moduleName);
+
+            if (!permissions.canRead) {
+                return NextResponse.rewrite(new URL('/404', request.url));
+            }
+        } catch (error) {
+            console.error("Error in middleware:", error);
+            return NextResponse.redirect(new URL('/login', request.url));
         }
     },
     {
         callbacks: {
-            authorized: ({ token }) => !!token
+            authorized: ({ token }) => {
+                if (process.env.NODE_ENV === 'production') {
+                    console.log("Token check in production:", !!token);
+                }
+                return !!token;
+            }
         },
     }
-)
+);
 
-export const config = { matcher: ["/admin"] }
+export const config = { matcher: ["/admin"] };
