@@ -29,9 +29,11 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ token }) => {
+                console.log("Token:", token);
                 if (process.env.NODE_ENV === 'production') {
                     console.log("Token check in production:", !!token);
                 }
+                console.log("Token check in dev:", !!token);
                 return !!token;
             }
         },
