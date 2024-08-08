@@ -9,7 +9,7 @@ export default async function LobbyLayout({
   const session = await getAuthSession();
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <NavigationBar session={session?.user} />
       <div>{children}</div>
     </div>

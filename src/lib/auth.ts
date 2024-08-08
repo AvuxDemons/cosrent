@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token }: { token: JWT }) {
             if (token) {
                 const dbUser: DbUser = await upsertUser(token);
-                token.role = dbUser.role.id;
+                token.role = dbUser.role?.id || 'user';
             }
             return token;
         },

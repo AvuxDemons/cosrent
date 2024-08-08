@@ -10,17 +10,19 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import { signOut } from "next-auth/react";
-import {
-  FaPhoneAlt,
-  FaPlus,
-  FaSignOutAlt,
-  FaThemeco,
-  FaUser,
-} from "react-icons/fa";
+import { FaPhoneAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { FaCartShopping } from "react-icons/fa6";
-import Theme from "../ui/Theme";
+import Theme from "@/components/ui/Theme";
+import Link from "next/link";
 
-const UserAccountNav = ({ session }: { session: any }) => {
+const UserAccountNav = ({
+  trigger,
+  session,
+}: {
+  trigger: "avatar" | "user";
+  session: any;
+}) => {
   return (
     <Dropdown
       radius="sm"
@@ -30,12 +32,29 @@ const UserAccountNav = ({ session }: { session: any }) => {
       }}
     >
       <DropdownTrigger className="flex items-center justify-center">
-        <Avatar
-          showFallback
-          as="button"
-          className="transition-transform"
-          src={session?.image}
-        />
+        {trigger === "avatar" ? (
+          <Avatar
+            as="button"
+            size="sm"
+            showFallback
+            className="hover:opacity-50 transition-opacity"
+            src={session?.image}
+          />
+        ) : (
+          <User
+            as="button"
+            name={session?.name}
+            classNames={{
+              name: "text-default-600",
+              description: "text-default-500",
+              base: "hover:opacity-50 transition-opacity",
+            }}
+            avatarProps={{
+              size: "sm",
+              src: session?.image,
+            }}
+          />
+        )}
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Custom item styles"
@@ -55,7 +74,7 @@ const UserAccountNav = ({ session }: { session: any }) => {
           ],
         }}
       >
-        <DropdownSection aria-label="Profile & Actions" showDivider>
+        <DropdownSection aria-label="User" showDivider>
           <DropdownItem
             isReadOnly
             key="user"
@@ -77,9 +96,18 @@ const UserAccountNav = ({ session }: { session: any }) => {
           <DropdownItem key="profile" startContent={<FaUser />}>
             My Profile
           </DropdownItem>
-          <DropdownItem key="settings" startContent={<FaCartShopping />}>
-            Orders
-          </DropdownItem>
+          {session.role === "user" ? (
+            <DropdownItem key="orders" startContent={<FaCartShopping />}>
+              Orders
+            </DropdownItem>
+          ) : (
+            <DropdownItem
+              key="admin"
+              startContent={<TbLayoutDashboardFilled />}
+            >
+              <Link href="/admin">Dashboard</Link>
+            </DropdownItem>
+          )}
         </DropdownSection>
         <DropdownSection aria-label="Settings" showDivider>
           <DropdownItem isReadOnly key="theme" endContent={<Theme />}>
