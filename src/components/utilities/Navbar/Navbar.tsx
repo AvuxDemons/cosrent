@@ -32,7 +32,6 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { GiSpiderMask } from "react-icons/gi";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import UserAccountNav from "@/components/utilities/Navbar/User";
 import Theme from "@/components/ui/Theme";
@@ -147,7 +146,7 @@ const NavigationBar = ({ session }: { session: any }) => {
 
   return (
     <nav>
-      <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
+      <Navbar position="static" isBordered onMenuOpenChange={setIsMenuOpen}>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
