@@ -11,6 +11,7 @@ import {
   Radio,
 } from "@nextui-org/react";
 import Cropper, { Area } from "react-easy-crop";
+import { FaImage } from "react-icons/fa6";
 
 interface ImageCropperProps {
   image: string;
@@ -55,6 +56,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       onOpenChange={setIsOpen}
       isDismissable={false}
       isKeyboardDismissDisabled={true}
+      hideCloseButton
       onClose={() => {
         setIsOpen(false);
         onCropCancel();
@@ -64,7 +66,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       classNames={{ base: "h-[80vh]" }}
     >
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">Crop Image</ModalHeader>
+        <ModalHeader className="flex flex-col gap-1">Edit Image</ModalHeader>
         <ModalBody>
           <div className="relative h-full">
             <Cropper
@@ -86,11 +88,13 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center gap-4">
             <Slider
               aria-label="Zoom Image"
-              label="Zoom"
-              hideValue={true}
+              hideValue
+              hideThumb
+              startContent={<FaImage />}
+              endContent={<FaImage size={25} />}
               step={0.01}
               maxValue={3}
               minValue={1}
@@ -118,7 +122,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               setIsOpen(false);
             }}
           >
-            Close
+            Cancel
           </Button>
           <Button
             color="primary"
@@ -127,7 +131,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               setIsOpen(false);
             }}
           >
-            Action
+            Apply
           </Button>
         </ModalFooter>
       </ModalContent>

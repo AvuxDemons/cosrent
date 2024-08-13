@@ -1,4 +1,4 @@
-import NavigationBar from "@/components/utilities/Navbar/Navbar";
+import NavigationBar from "@/components/utilities/Navbar";
 import { getAuthSession } from "@/lib/auth";
 
 export default async function LobbyLayout({

@@ -1,19 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import FileInput from "./ImageInput";
 import ImageCropper from "./ImageCropper";
 import { Area } from "react-easy-crop";
 
-const ImageWrapper: React.FC = () => {
-  const [image, setImage] = useState<string>("");
-  const [imgAfterCrop, setImgAfterCrop] = useState<string>("");
+interface ImageWrapperProps {
+  image: string;
+  imgAfterCrop: string;
+  setImage: (image: string) => void;
+  setImgAfterCrop: (image: string) => void;
+  resetImage: () => void;
+}
 
+const ImageWrapper: React.FC<ImageWrapperProps> = ({
+  image,
+  imgAfterCrop,
+  setImage,
+  setImgAfterCrop,
+  resetImage,
+}: ImageWrapperProps) => {
   // Invoked when new image file is selected
-  const onImageSelected = (selectedImg: string) => {
-    setImage(selectedImg);
+  const onImageSelected = (selectedImg: string | ArrayBuffer | null) => {
+    if (typeof selectedImg === "string") {
+      setImage(selectedImg);
+    } else {
+      resetImage();
+    }
   };
 
-  // Generating Cropped Image When Done Button Clicked
-  const onCropDone = (imgCroppedArea: Area) => {
+  const onCropDone = (imgCroppedArea: Area | null) => {
+    if (!imgCroppedArea) return;
+
     const canvasEle = document.createElement("canvas");
     canvasEle.width = imgCroppedArea.width;
     canvasEle.height = imgCroppedArea.height;
@@ -43,9 +59,8 @@ const ImageWrapper: React.FC = () => {
     }
   };
 
-  // Handle Cancel Button Click
   const onCropCancel = () => {
-    setImage("");
+    resetImage();
   };
 
   return (
@@ -74,7 +89,7 @@ const ImageWrapper: React.FC = () => {
 
           <button
             onClick={() => {
-              setImage("");
+              resetImage();
             }}
             className="btn"
           >

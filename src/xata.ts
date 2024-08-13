@@ -47,10 +47,10 @@ const tables = [
     columns: [
       { name: "role", type: "link", link: { table: "role" } },
       { name: "module", type: "link", link: { table: "module" } },
-      { name: "create", type: "bool", notNull: true, defaultValue: "false" },
-      { name: "read", type: "bool", notNull: true, defaultValue: "false" },
-      { name: "update", type: "bool", notNull: true, defaultValue: "false" },
-      { name: "delete", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "canCreate", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "canRead", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "canUpdate", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "canDelete", type: "bool", notNull: true, defaultValue: "false" },
     ],
   },
 ] as const;

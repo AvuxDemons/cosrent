@@ -15,7 +15,7 @@ export default withAuth(
         const role: string = token.role || 'user';
 
         try {
-            const moduleName = `page-${pathname.split('/').pop()}`;
+            const moduleName = `page-${pathname.split('/').pop()?.replaceAll('/', '-')}`;
             const permissions = await getPermissions(role, moduleName);
 
             if (!permissions.canRead) {
