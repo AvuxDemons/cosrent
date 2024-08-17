@@ -76,15 +76,16 @@ const AuthenticationPage = () => {
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Persyaratan Layanan
+                Persyaratan
               </Link>{" "}
               dan{" "}
               <Link
                 href="/privacy"
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Kebijakan Privasi
-              </Link>
+                Kebijakan
+              </Link>{" "}
+              kami.
             </p>
           </div>
         </div>

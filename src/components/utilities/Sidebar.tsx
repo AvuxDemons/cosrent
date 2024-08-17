@@ -13,17 +13,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
-  FaArrowLeft,
   FaBoxes,
   FaCalendar,
   FaFileInvoiceDollar,
-  FaMask,
   FaPhoneAlt,
-  FaTable,
   FaTshirt,
-  FaUser,
+  FaWrench,
 } from "react-icons/fa";
-import { FaGear } from "react-icons/fa6";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 
 const Sidebar = ({
@@ -49,8 +45,8 @@ const Sidebar = ({
     bundle: (
       <FaBoxes className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
     ),
-    accessories: (
-      <FaMask className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
+    settings: (
+      <FaWrench className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
     ),
     support: (
       <FaPhoneAlt className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
@@ -58,51 +54,34 @@ const Sidebar = ({
   };
   const navigationItems = [
     {
-      title: "Home",
-      data: [
-        { label: "Dashboard", path: "/admin", icon: icons.dashboard },
-        {
-          label: "Pengajuan",
-          path: "/admin/queue",
-          icon: icons.pengajuan,
-        },
-        { label: "Jadwal", path: "/schedule", icon: icons.jadwal },
-      ],
+      label: "Dashboard",
+      path: "/admin",
+      icon: icons.dashboard,
     },
     {
-      title: "Katalog",
-      data: [
-        {
-          label: "Kostum",
-          path: "/admin/katalog/costume",
-          icon: icons.kostum,
-        },
-        {
-          label: "Bundle",
-          path: "/admin/katalog/bundle",
-          icon: icons.bundle,
-        },
-        {
-          label: "Aksesoris",
-          path: "/admin/katalog/accessories",
-          icon: icons.accessories,
-        },
-      ],
+      label: "Pengajuan",
+      path: "/admin/queue",
+      icon: icons.pengajuan,
     },
     {
-      title: "Assets",
-      data: [
-        {
-          label: "Kostum",
-          path: "/admin/assets/costume",
-          icon: icons.kostum,
-        },
-        {
-          label: "Aksesoris",
-          path: "/admin/assets/accessories",
-          icon: icons.accessories,
-        },
-      ],
+      label: "Jadwal",
+      path: "/schedule",
+      icon: icons.jadwal,
+    },
+    {
+      label: "Katalog",
+      path: "/admin/katalog/costume",
+      icon: icons.kostum,
+    },
+    {
+      label: "Assets",
+      path: "/admin/katalog/bundle",
+      icon: icons.bundle,
+    },
+    {
+      label: "Pengaturan",
+      path: "/admin/settings",
+      icon: icons.settings,
     },
   ];
   const [open, setOpen] = useState(false);
@@ -110,7 +89,7 @@ const Sidebar = ({
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row w-full flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
+        "flex flex-col md:flex-row w-full flex-1 mx-autooverflow-hidden",
         "h-screen"
       )}
     >
@@ -118,22 +97,9 @@ const Sidebar = ({
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             {open ? <Logo /> : <LogoIcon />}
-            <div className="mt-8 flex flex-col gap-5">
+            <div className="mt-8">
               {navigationItems.map((item, idx) => (
-                <div key={idx} className="flex flex-col gap-2">
-                  <p
-                    className={`${
-                      open ? "visible" : "invisible"
-                    } text-xs font-medium`}
-                  >
-                    {item.title}
-                  </p>
-                  <div>
-                    {item.data.map((data, idx) => (
-                      <SidebarLink key={idx} link={data} />
-                    ))}
-                  </div>
-                </div>
+                <SidebarLink key={idx} link={item} />
               ))}
             </div>
           </div>
@@ -155,9 +121,9 @@ export const Logo = () => {
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
+        className="font-bold text-black dark:text-white whitespace-pre"
       >
-        Cosrent
+        WEEBDEV.ID
       </motion.span>
     </Link>
   );

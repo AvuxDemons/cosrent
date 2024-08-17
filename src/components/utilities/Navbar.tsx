@@ -41,6 +41,7 @@ import clsx from "clsx";
 import Theme from "@/components/ui/Theme";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 type NavbarItemData = {
   label: string;
@@ -96,7 +97,7 @@ const navbarItems: NavbarSection[] = [
     data: [
       {
         label: "Kostum",
-        description: "kostum dengan kualitas terbaik.",
+        description: "Kostum dengan kualitas terbaik.",
         startContent: icons.costume,
         path: "/katalog",
       },
@@ -159,8 +160,13 @@ const NavigationBar = ({ session }: { session: any }) => {
         />
         <NavbarBrand>
           <Link href="/" className="flex items-center gap-2 cursor-pointer">
-            <GiSpiderMask size={25} />
-            <p className="font-bold text-inherit">COSRENT</p>
+            <Image
+              src={"/logo.png"}
+              alt="logo"
+              width={100}
+              height={100}
+              className="invert dark:invert-0"
+            />
           </Link>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -200,6 +206,7 @@ const NavigationBar = ({ session }: { session: any }) => {
               >
                 {section.data.map((item) => (
                   <DropdownItem
+                    href={item.path}
                     key={item.label}
                     description={item.description}
                     startContent={item.startContent}
@@ -207,7 +214,7 @@ const NavigationBar = ({ session }: { session: any }) => {
                       "text-primary": isActive(item.path),
                     })}
                   >
-                    <Link href={item.path}>{item.label}</Link>
+                    {item.label}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
